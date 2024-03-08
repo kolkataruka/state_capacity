@@ -58,15 +58,15 @@ def load_data():
 def data_split(init_df):
     #Normalizing and splitting data into training and testing sets
 
-    init_df = init_df[['Human Development Index', 'rigor_admin','rule_of_law','regime','civil_liberties','corruption','inf_capacity','years_colonized','state_capacity','taxation','territory_control']]
+    init_df = init_df[['Human Development Index', 'rigor_admin','rule_of_law','regime','civil_liberties','corruption','years_colonized','state_capacity','taxation','territory_control']]
     
     init_df = init_df.dropna()
     #print(init_df.head())
-    #cols = init_df.columns
+    cols = init_df.columns
     #df_scaled = normalize(init_df) 
 
     #df_scaled = pd.DataFrame(df_scaled, columns=cols) 
-
+    df_encoded = pd.get_dummies(init_df, columns=['regime'], drop_first=True) #one hot encoding regime types and admin scale
     #print(df_scaled.head())
     y=init_df['Human Development Index']
     X=init_df.drop(columns=['Human Development Index'])
