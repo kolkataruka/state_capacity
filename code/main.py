@@ -81,12 +81,15 @@ def linear_regressors(X_train, X_test, y_train, y_test):
     print(coef_comp)
 
 def clusters():
+    '''Forming clusters of the data'''
     pass
 
-def multilinear():
+def multilayer():
+    '''Training the multilayer neural network'''
     pass
 
 def main():
+    '''Main function to load, preprocess, and train the data'''
     init_data = load_data()
     init_data.describe().to_csv('../outputs/descriptive_stats.csv')
     X_train, X_test, y_train, y_test = data_split(init_data)

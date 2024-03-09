@@ -56,7 +56,7 @@ def load_data():
     return final_df
 
 def data_split(init_df):
-    #Normalizing and splitting data into training and testing sets
+    '''Normalizing and splitting data into training and testing sets'''
 
     init_df = init_df[['Human Development Index', 'rigor_admin','rule_of_law','regime','civil_liberties','corruption','years_colonized','state_capacity','taxation','territory_control']]
     
