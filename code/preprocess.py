@@ -74,7 +74,7 @@ def data_split(init_df):
     X = new_df.drop(columns=['Human Development Index'])
     new_df_scaled = normalize(X) #Normalizes the data in df_clustering
     new_X = pd.DataFrame(new_df_scaled, columns=X.columns, index=new_df.index)
-    X.columns = X.columns.astype(str)
+    new_X.columns = new_X.columns.astype(str)
     X_train, X_test, y_train, y_test = train_test_split(new_X, y, test_size=0.2, random_state=1680)
     return X_train, X_test, y_train, y_test
 

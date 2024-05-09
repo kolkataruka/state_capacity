@@ -81,22 +81,31 @@ def linear_regressors(X_train, X_test, y_train, y_test):
 
 def pca(df):
     '''Conducting Principal Component Analysis'''
+
+
     df = df.dropna()
-    #print(df.head())
+    #Getting Dummies for fixed effects 
     year_dummies = pd.get_dummies(df['Year'], drop_first=True, dtype=int)
     country_dummies = pd.get_dummies(df['Code'], drop_first=True, dtype=int)
     new_df = pd.concat([df, year_dummies, country_dummies], axis=1)
     new_df = new_df.drop(columns=['Code', 'Year'])
+
+    #Splitting data and generating PCA
     y = new_df[['Human Development Index']]
     X = new_df.drop(columns=['Human Development Index'])
     pca = PCA(n_components=1).fit_transform(X[['rigor_admin', 'rule_of_law', 'state_capacity', 'taxation', 'territory_control']])
     X['pc1'] = pca[:,0] 
     new_df['pc1'] = X['pc1']
+
+    #Normalizing data
     new_df_scaled = normalize(X) #Normalizes the data in df_clustering
-    new_X = pd.DataFrame(new_df_scaled, columns=X.columns, index=new_df.index)
-    #print(X.head())
+    new_X = pd.DataFrame(new_df_scaled, columns=X.columns, index=X.index)
+    #new_y_scaled = normalize(y) #Normalizes the data in df_clustering
+    #y = pd.DataFrame(new_y_scaled, columns=y.columns, index=y.index)
+
+    #Splitting into training and testing, training the model
     X_train, X_test, y_train, y_test = train_test_split(new_X.drop(columns=['rigor_admin', 'rule_of_law', 'state_capacity', 'taxation', 'territory_control']), y, test_size=0.2, random_state=1680)
-    print(len(X_train))
+    #print(len(X_train))
     ols = sm.OLS(y_train, X_train)
    
     trained_reg = ols.fit()
@@ -109,6 +118,8 @@ def pca(df):
     with open('../outputs/pca_table.tex', 'w') as file:
         file.write(summary)
     
+
+    #Visualizing results of the model
     plt.figure(figsize=(12, 8))
     ax = plt.axes()
     params = trained_reg.params.tolist()
@@ -156,7 +167,6 @@ def main():
     X_train, X_test, y_train, y_test = data_split(init_data)
     #linear_regressors(X_train, X_test, y_train, y_test)
     pca(init_data)
-    #multilayer(X_train, X_test, y_train, y_test)
    
     
 
