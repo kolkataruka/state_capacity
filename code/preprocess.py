@@ -58,7 +58,6 @@ def load_data():
 def data_split(init_df):
     '''Normalizing and splitting data into training and testing sets'''
 
-    init_df = init_df[['Human Development Index', 'rigor_admin','rule_of_law','regime','civil_liberties','corruption','years_colonized','state_capacity','taxation','territory_control']]
     
     init_df = init_df.dropna()
     #print(init_df.head())
@@ -66,11 +65,17 @@ def data_split(init_df):
     #df_scaled = normalize(init_df) 
 
     #df_scaled = pd.DataFrame(df_scaled, columns=cols) 
-    df_encoded = pd.get_dummies(init_df, columns=['regime'], drop_first=True) #one hot encoding regime types and admin scale
-    #print(df_scaled.head())
-    y=init_df['Human Development Index']
-    X=init_df.drop(columns=['Human Development Index'])
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1680)
+    year_dummies = pd.get_dummies(init_df['Year'], drop_first=True, dtype=int)
+    country_dummies = pd.get_dummies(init_df['Code'], drop_first=True, dtype=int)
+    new_df = pd.concat([init_df, year_dummies, country_dummies], axis=1)
+    new_df = new_df.drop(columns=['Code', 'Year'])
+    
+    y = new_df[['Human Development Index']]
+    X = new_df.drop(columns=['Human Development Index'])
+    new_df_scaled = normalize(X) #Normalizes the data in df_clustering
+    new_X = pd.DataFrame(new_df_scaled, columns=X.columns, index=new_df.index)
+    X.columns = X.columns.astype(str)
+    X_train, X_test, y_train, y_test = train_test_split(new_X, y, test_size=0.2, random_state=1680)
     return X_train, X_test, y_train, y_test
 
 
