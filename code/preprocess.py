@@ -4,9 +4,8 @@ from sklearn.preprocessing import normalize
 
 #v2clrspct - rigorous admin
 #v2svdomaut - domestic policy free from interference
-#v2svinlaut - foreign policy free
 #v2x_rule - rule of law
-#v2x_regime_amb - type of regime (with ambiguous), v2x_accountability
+#v2x_regime_amb - type of regime (with ambiguous)
 #v2x_civlib - civil liberties index
 #v2x_corr - corruption index
 #democracy indices: v2x_polyarchy, v2x_libdem, v2x_partipdem, v2x_delibdem, v2x_egaldem
@@ -56,7 +55,7 @@ def load_data():
     return final_df
 
 def data_split(init_df):
-    '''Normalizing and splitting data into training and testing sets'''
+    '''Normalizing and splitting data into training and testing sets, generating dummies for fixed effects'''
 
     
     init_df = init_df.dropna()
